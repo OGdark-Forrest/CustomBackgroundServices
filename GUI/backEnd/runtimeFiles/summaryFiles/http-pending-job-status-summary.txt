@@ -1,0 +1,36 @@
+The conversation clarified the usual HTTP status code pattern for asynchronous/background jobs.
+
+Key points:
+- The standard status code for an initial request that starts a background job is **202 Accepted**.
+- **202 Accepted** is appropriate when:
+  - the server successfully received the request,
+  - the work is not finished yet,
+  - processing will happen asynchronously.
+
+Typical API pattern described:
+1. **Create/start job**
+   - Endpoint example: `POST /jobs`
+   - Return: **202 Accepted**
+   - Example body: `{"job_id":"abc123","status":"pending"}`
+
+2. **Poll job status**
+   - Endpoint example: `GET /jobs/abc123`
+   - If still pending/running, return usually **200 OK**
+   - Example bodies:
+     - `{"status":"pending","job_id":"abc123"}`
+     - `{"status":"running","job_id":"abc123"}`
+
+3. **When completed**
+   - Return usually **200 OK**
+   - Example body: `{"status":"completed","result":...}`
+
+4. **When failed**
+   - Often still **200 OK** with failure status in the response body
+   - Example body: `{"status":"failed","error":"..."}`
+   - Depending on API design, some implementations may instead use **4xx** or **5xx** codes.
+
+Important distinction:
+- **202 Accepted** is most commonly for the **initial job creation/start request**.
+- **200 OK** is usually used for later **job status-check requests**, with the actual job state communicated in the JSON body.
+
+The response also noted this pattern would fit a **FastAPI + Shortcuts** setup and offered to provide a small FastAPI example.

@@ -1,0 +1,18 @@
+{
+    "ChatOverlay": {
+        "created": "False",
+        "setFocus": "False"
+    },
+    "ServiceManager": {
+        "created": "True",
+        "setFocus": "False"
+    },
+    "CurlManager": {
+        "created": "False",
+        "setFocus": "False"
+    },
+    "SongMonitor": {
+        "created": "False",
+        "setFocus": "False"
+    }
+}

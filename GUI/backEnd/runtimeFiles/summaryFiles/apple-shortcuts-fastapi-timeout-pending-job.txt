@@ -1,0 +1,32 @@
+The conversation is about designing Apple Shortcuts to interact reliably with a FastAPI server.
+
+Key points from the discussion:
+- A 30-second request/response time should not be considered safe or reliable for Apple Shortcuts.
+- It may work sometimes, but it is risky because of Shortcuts behavior, iOS backgrounding/interruption, network instability, and general flakiness with long-running requests.
+- Recommended timing guidance:
+  - Ideal: 1–5 seconds
+  - Sometimes acceptable: under 10 seconds
+  - 10–30 seconds: risky
+  - 30+ seconds: should generally be avoided
+- Conclusion given: 30 seconds is not a good architectural target, though it may be okay for experimentation.
+
+Recommended architecture:
+- Do not keep Apple Shortcuts waiting on one long HTTP request if the task may take several seconds.
+- Prefer a job-based async workflow:
+  1. Shortcut calls FastAPI
+  2. FastAPI immediately returns an acknowledgment such as:
+     `{"status":"accepted","job_id":"abc123"}`
+  3. Server performs the real work in the background
+  4. Shortcut polls for job status after a short delay
+- Practical design advice:
+  - If the task is quick, return the final result directly
+  - If it may take more than a few seconds, convert it into a background job
+  - Personal recommended threshold:
+    - target under 5 seconds
+    - if it can exceed about 8–10 seconds, switch to async job/polling
+
+User’s final unanswered question:
+- They asked: “what’s the usual status code for a pending job”
+
+Useful implied follow-up:
+- They likely need guidance on HTTP status codes for async job handling, especially for “accepted/pending” job workflows in FastAPI used by Apple Shortcuts.

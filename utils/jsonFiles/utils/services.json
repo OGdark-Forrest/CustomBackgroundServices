@@ -1,0 +1,53 @@
+{
+    "Music": {
+        "AutoPause": {
+            "running": "False",
+            "description": "Automatically pausing music, when other media detected",
+            "fileName": "AutoPause"
+        },
+        "IntervalSkipper": {
+            "running": "False",
+            "description": "Skips over set intervals for a given song",
+            "fileName": "IntervalSkipper"
+        },
+        "SpotifyOverlay": {
+            "running": "False",
+            "description": "Simple and minimal media overlay",
+            "fileName": "SpotifyOverlay"
+        },
+        "SpeechPause": {
+            "running": "False",
+            "description": "Automatically pausing media, when human speech is detected",
+            "fileName": "SpeechPause"
+        }
+    },
+    "Tracker": {
+        "MangaTracker": {
+            "running": "False",
+            "description": "Tracks Manga",
+            "fileName": "MangaTracker"
+        }
+    },
+    "Server": {
+        "RemotePlayer": {
+            "running": "False",
+            "description": "Remotely controlling laptop media",
+            "fileName": "ServerStart"
+        },
+        "RemoteNotes": {
+            "running": "False",
+            "description": "Modifying and getting Project Notes",
+            "fileName": "ServerStart"
+        },
+        "RemoteStart": {
+            "running": "True",
+            "description": "Remotely start mode respective apps/websites",
+            "fileName": "ServerStart"
+        },
+        "RemoteService": {
+            "running": "True",
+            "description": "Remotely launch services",
+            "fileName": "ServerStart"
+        }
+    }
+}

@@ -1,0 +1,107 @@
+{
+    "Project": {
+        "Apps": [
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Spotify.lnk",
+            "powershell.exe",
+            "Notepad.exe",
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Visual Studio Code/Visual Studio Code.lnk",
+            "C:/Users/meerc/Desktop/CustomServices/VBS/ChatOverlay.vbs"
+        ],
+        "Websites": [
+            "chatgpt.com"
+        ],
+        "Services": [
+            "Music/AutoPause",
+            "Music/SpotifyOverlay",
+            "Music/IntervalSkipper"
+        ],
+        "Closing": [
+            "brave.exe",
+            "Code.exe",
+            "Obsidian.exe",
+            "Spotify.exe",
+            "Notepad.exe"
+        ]
+    },
+    "Study":  {
+        "Apps": [
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Spotify.lnk",
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Obsidian.lnk"
+        ],
+        "Websites": [
+            "chatgpt.com",
+            "mail.google.com",
+            "youtube.com"
+        ],
+        "Services": [
+            "Music/AutoPause",
+            "Music/SpotifyOverlay",
+            "Music/IntervalSkipper"
+        ],
+        "Closing": [
+            "brave.exe",
+            "Code.exe",
+            "Obsidian.exe",
+            "Spotify.exe",
+            "Notepad.exe"
+        ]
+    },
+    "Fun": {
+        "Apps": [
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Spotify.lnk"
+        ],
+        "Websites": [
+            "veck.io",
+            "youtube.com"
+        ],
+        "Services": [
+
+        ],
+        "Closing": [
+            "brave.exe",
+            "Code.exe",
+            "Obsidian.exe",
+            "Spotify.exe",
+            "Notepad.exe"
+        ]
+    },
+    "Browse": {
+        "Apps": [
+            "brave.exe"
+        ],
+        "Websites": [
+
+        ],
+        "Services": [
+            "Music/IntervalSkipper",
+            "Music/SpotifyOverlay"
+        ],
+        "Closing": [
+            "brave.exe",
+            "Code.exe",
+            "Obsidian.exe",
+            "Spotify.exe",
+            "Notepad.exe"
+        ]
+    },
+    "Music": {
+        "Apps": [
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Spotify.lnk"
+        ],
+        "Websites": [
+
+        ],
+        "Services": [
+            "Music/IntervalSkipper",
+            "Music/SpotifyOverlay",
+            "Music/AutoPause"
+        ],
+        "Closing": [
+            "brave.exe",
+            "Code.exe",
+            "Obsidian.exe",
+            "Spotify.exe",
+            "Notepad.exe"
+        ]
+    }
+}

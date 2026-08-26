@@ -1,0 +1,73 @@
+User is debugging a Python `OSError: [Errno 22] Invalid argument` from:
+
+`general.writeTXT(f"C:/Users/meerc/Documents/SharedNotes/{content.filename}.txt", content.content)`
+
+The failing path shows that `content.filename` contains the full note text, including newline characters and multiple lines of content, not just a simple filename like `ProjectNotes`. Because of that, Windows rejects the path as invalid. Key diagnosis and guidance given:
+
+- Root cause:
+  - `content.filename` is likely being populated with the note body/text instead of the note title/name.
+  - The generated path includes note content such as:
+    - `ProjectNotes`
+    - `Small button window which on clicking open service manager...`
+    - more lines ending in `mangatracker.py.txt`
+- Why Windows rejects it:
+  - Filenames cannot contain newline characters.
+  - Filenames also cannot contain invalid characters such as `< > : " / \ | ? *`.
+- Likely causes suggested:
+  1. `content.content` was accidentally passed into `content.filename`
+  2. parsing logic merged filename and body into one field
+  3. unsanitized user text was used as the filename
+- Expected correct data split:
+  - `content.filename = "ProjectNotes"`
+  - `content.content = "Small button window which on clicking..."`
+- Debugging suggestions provided:
+  - print `repr(content.filename)`
+  - print first part of `repr(content.content)`
+  - this would likely reveal that filename contains the entire note body
+- Safer implementation suggested:
+  - sanitize filename before writing by replacing invalid characters including `\n`, `\r`, `\t`
+  - optionally use `pathlib.Path` for path construction
+
+Apple Shortcuts context clarified by the user:
+
+- User is using Apple Shortcuts with:
+  - `Find Notes` in the `SharedNotes` folder
+  - `Choose from List`
+  - then getting the text from the chosen note
+- User’s main issue:
+  - they do not know how to get the selected note’s name/title from the note chosen in Shortcuts
+  - they specifically want the note name so they can send it as `filename`, while sending the body as `content`
+- Guidance given:
+  - after `Choose from List`, the selected item should still be a Note object
+  - next intended action was:
+    - `Get Details of Notes`
+    - input: selected note
+    - detail: `Name`
+  - for body/content:
+    - use `Get Details of Notes` again with detail `Body`
+- Suggested clean Shortcut flow:
+  1. Find Notes in SharedNotes
+  2. Choose from List
+  3. Set Variable: `SelectedNote`
+  4. Get Details of Notes from `SelectedNote` -> `Name`
+  5. Set Variable: `NoteName`
+  6. Get Details of Notes from `SelectedNote` -> `Body`
+  7. Set Variable: `NoteBody`
+  8. Send:
+     - `filename = NoteName`
+     - `content = NoteBody`
+- Important final user blocker:
+  - user reports there is **no option for “Get Details of Notes”** in Apple Shortcuts, so the proposed next step may not be directly available in their current Shortcuts action list or environment
+
+Potentially relevant note content that appeared inside the mistakenly used filename/body:
+- ProjectNotes
+- small round movable button window that opens service manager and reappears when service manager closes
+- separate chat for discussions
+- iPhone/Shortcuts idea using recursive shortcut calls and periodic pinging instead of continuous listening / no while loop
+- maintain instruction dictionary mapped to IP
+- custom markdown task service through Obsidian or separate markdown, with phone update/retrieval
+- on connection issues, start `timer.py` as another service for `mangatracker.py`
+
+Overall state at end:
+- Python-side issue was identified correctly as invalid path caused by note body being used as filename.
+- Shortcuts-side unresolved problem remains: user cannot find the “Get Details of Notes” action needed to extract the selected note’s title/name.

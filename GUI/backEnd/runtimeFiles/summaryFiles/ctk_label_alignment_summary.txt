@@ -1,0 +1,37 @@
+User shared a CustomTkinter (`ctk`) GUI class `Overlay(ctk.CTk)` displaying device info (`deviceName`, `uuid`, `ip`) in an `infoContainer` frame using `grid`, plus Reject/Accept buttons in a `buttonContainer`.
+
+User’s issue:
+- Wants the fixed labels (`"Device Name:"`, `"UUID:"`, `"IP Address:"`) aligned on the left side
+- Wants the dynamic value labels (`self.deviceName`, `self.uuid`, `self.ip`) aligned consistently on the right side / in a clean second column
+- Specifically asked how to make them aligned visually
+
+LLM guidance:
+- The labels are already in separate grid columns, but they look misaligned because `grid()` defaults to centering widgets inside their cells
+- Use `sticky` on labels to control alignment within grid cells
+- Add padding to improve spacing and readability
+
+Recommended layout changes:
+- For basic left alignment of both columns: use `sticky="w"` on both fixed and dynamic labels
+- Better visual alignment: right-align the fixed labels with `sticky="e"` and left-align the dynamic labels with `sticky="w"`
+- This creates a neat two-column appearance like:
+  - `Device Name:  PC_Meercat`
+  - `UUID:         something`
+  - `IP Address:   something`
+
+Other suggested code adjustments:
+- Add `self.grid_columnconfigure(0, weight=1)` in the main window so content expands properly
+- Place `infoContainer` with `padx=10, pady=10, sticky="nsew"`
+- Keep `infoContainer.grid_columnconfigure(0, weight=0)` and `grid_columnconfigure(1, weight=1)`
+- Use padding such as:
+  - fixed labels: `padx=(10, 5), pady=5`
+  - dynamic labels: `padx=(5, 10), pady=5`
+- Add button padding:
+  - `buttonContainer.grid(row=1, column=0, pady=(0, 10))`
+  - buttons with `padx=5`
+
+Key final recommendation:
+- Fixed labels in column 0: `sticky="e"`
+- Dynamic labels in column 1: `sticky="w"`
+
+LLM also mentioned an optional future improvement:
+- Make all dynamic labels the same width for an even cleaner look.

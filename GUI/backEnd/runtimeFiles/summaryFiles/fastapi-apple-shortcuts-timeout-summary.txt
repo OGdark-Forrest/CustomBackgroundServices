@@ -1,0 +1,35 @@
+The conversation is about integrating FastAPI with Apple Shortcuts and handling HTTP request timeouts.
+
+Key points:
+- The user is sending HTTP requests from Apple Shortcuts to a FastAPI server and wants to know whether Apple Shortcuts stops accepting a response after some timeout.
+- The response explained that Apple Shortcuts likely does have a timeout for the “Get Contents of URL” action, but Apple does not clearly publish an exact official timeout duration in user-facing documentation.
+- Practical observations mentioned:
+  - Shortcuts can fail with timeout errors if the server response takes too long.
+  - Background automations may also have broader runtime limits, especially when running in the background.
+- Because there is no clearly documented fixed timeout, the advice was not to rely on an exact number without testing on the user’s specific device and iOS version.
+
+Recommendations that were given:
+1. Keep FastAPI responses fast.
+   - Ideally under a few seconds.
+   - Avoid designing the endpoint around long-running synchronous work.
+2. If processing takes longer, return immediately with an acknowledgement object, for example:
+   {
+     "status": "accepted",
+     "job_id": "123"
+   }
+3. Use a job-based workflow:
+   - `POST /start-task`
+   - immediate response with `job_id`
+   - Apple Shortcuts waits briefly
+   - `GET /task-status/{job_id}`
+   - fetch result when complete, otherwise retry
+4. On the FastAPI side, avoid blocking heavy work inside the request.
+   - Possible approaches mentioned: `BackgroundTasks`, a queue, Celery, RQ, or a simple in-memory task tracker for small setups.
+5. Add server-side logging of request duration to determine where failures happen in practice.
+
+Most recent user question:
+- The user then asked whether it is safe to keep the timeout at 30 seconds.
+
+Important unresolved context:
+- The conversation ends with that question and does not yet include an answer.
+- Based on prior guidance, 30 seconds was not confirmed as officially safe; the earlier advice implied that long waits are risky and should be validated empirically on the target device/iOS version rather than assumed.
