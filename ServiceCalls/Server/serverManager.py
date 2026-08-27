@@ -1,6 +1,9 @@
 from utils.imports import *
 import utils.general as general
 
+general.configureLogger("stdout.log")
+logger = general.setLogger("Server.ServerManager")
+
 def runServer():
     global serverProcess
     serverProcess = subprocess.Popen(
@@ -11,14 +14,19 @@ def runServer():
 def runCloudFlared():
     subprocess.Popen(
         ["powershell", "-NoExit", "-Command", "cloudflared tunnel run aetherlink"],
-        creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+        creationflags=subprocess.CREATE_NEW_PROCESS_GROUP|subprocess.CREATE_NO_WINDOW
     )
 
 def run():
     global serverProcess
     serverProcess = None
+    
     runServer()
+    logger.info("Starting FastAPI server")
+    general.notificationThread("Server started...")
     runCloudFlared()
+    logger.info("Starting Cloudflared Tunnel")
+    general.notificationThread("Tunnel started...")
 
     while True:
         info = general.readJSON(general.pathInfo("jsonUtils")+"status.json")

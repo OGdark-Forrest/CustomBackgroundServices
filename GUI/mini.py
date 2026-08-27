@@ -60,7 +60,7 @@ class Overlay(ctk.CTk):
             text="✕", width=50, 
             height=50, 
             font=font, 
-            command=self.destroy,
+            command=quit,
             border_width=1,
             border_color="white"
             ).grid(row=0, column=0, sticky="nsew")
