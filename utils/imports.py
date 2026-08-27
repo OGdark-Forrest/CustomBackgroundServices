@@ -26,5 +26,9 @@ from winsdk.windows.media.control import (
     GlobalSystemMediaTransportControlsSessionManager,
     GlobalSystemMediaTransportControlsSessionPlaybackStatus
 )
+from winsdk.windows.devices.bluetooth import (
+    BluetoothDevice,
+    BluetoothConnectionStatus,
+)
 
 import hmac, hashlib

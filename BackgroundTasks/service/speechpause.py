@@ -5,10 +5,15 @@ from .operations import PlaybackManager
 from .SoundcoreAPI import Soundcore
 
 general.configureLogger("stdout.log")
+macaddress = "84:9D:4B:35:A7:C1"
 
-def connect(macaddress):
+async def connect(macaddress):
     global isConnected
     isConnected = False
+
+    if not await checkSoundcore():
+        return
+
     def tryConnect():
         global Headphone
         global isConnected, Headphone
@@ -34,7 +39,7 @@ def connect(macaddress):
     general.notificationThread("Connected to SoundCore")
 
 def toggleANC():
-    try:
+    if isConnected:
         global isTransparency
         if isTransparency:
             Headphone.ANC("ANC Indoor")
@@ -42,22 +47,56 @@ def toggleANC():
         else:
             Headphone.ANC("Transparency")
             isTransparency = True
-    except:
-        return
 
-def getInputDeviceIndex():
-    audio = pyaudio.PyAudio()
+def getInputDeviceIndex(portAudio):
+    audio = portAudio
 
     for i in range(audio.get_device_count()):
         info = audio.get_device_info_by_index(i)
         if info["name"] == "Microphone Array (Qualcomm(R) A":
             return i
-
+        
     return None
+
+MAC = 0x849D4B35A7C1
+async def checkSoundcore():
+    device = await BluetoothDevice.from_bluetooth_address_async(MAC)
+
+    if device is None:
+        return False
+
+    if device.connection_status == BluetoothConnectionStatus.CONNECTED:
+       return True
+    else:
+        return False
+
+async def checkConnection():
+    global isConnected
+    while True:
+        try:
+            connectedToSoundcore = await checkSoundcore()
+
+            if not connectedToSoundcore and isConnected:
+                isConnected = False
+                logger.info("Headphones have been disconnected")
+                general.notificationThread("Soundcore is Disconnected")
+
+            elif connectedToSoundcore and not isConnected:
+                logger.info("Headphones have been reconnected")
+                await connect(macaddress)
+
+        except Exception:
+            logger.exception("checkConnection crashed")
+
+        await asyncio.sleep(1)
+
+def thread_target():
+    asyncio.run(checkConnection())
 
 async def run():
     global logger
     logger = general.setLogger("speechpause.py")
+
     def terminateAudio():
         nonlocal stream, audio
         stream.stop_stream()
@@ -79,14 +118,20 @@ async def run():
         speech_pad_ms=100
     )
     logger.debug("Created VAD Iterator")
+
     stream = None
     audio = None
 
-    macaddress = "84:9D:4B:35:A7:C1"
-    isTransparency = False
-
     logger.debug("Attempting to connect to SoundCore")
-    connect(macaddress)
+    await connect(macaddress)
+
+    isTransparency = False
+    if isConnected:
+        Headphone.ANC("ANC Indoor")
+
+        wasPlaying = False
+
+    threading.Thread(target=thread_target, daemon=True).start()
 
     while True:
         condition = general.checkRunning("SpeechPause")
@@ -103,19 +148,26 @@ async def run():
         RATE = 16000
         CHUNK = 512
 
-        audio = pyaudio.PyAudio()
+        try:
+            audio = pyaudio.PyAudio()
 
-        stream = audio.open(
-            format=pyaudio.paFloat32,
-            channels=1,
-            rate=RATE,
-            input=True,
-            input_device_index=getInputDeviceIndex(),
-            frames_per_buffer=CHUNK
-        )
+            device_index = getInputDeviceIndex(audio)
 
-        general.notificationThread("SpeechPause is listening...")
-        wasPlaying = False
+            stream = audio.open(
+                format=pyaudio.paFloat32,
+                channels=1,
+                rate=RATE,
+                input=True,
+                input_device_index=device_index,
+                frames_per_buffer=CHUNK
+            )
+
+            general.notificationThread("SpeechPause is listening...")
+
+        except Exception:
+            logger.exception("AUDIO INITIALIZATION FAILED")
+            return
+        
         try:
             while True:
                 if not general.checkRunning("SpeechPause"):
@@ -135,19 +187,20 @@ async def run():
 
                 await playbackManager.checkPlaybackStatus()
                 if playbackManager.currSession is None:
+                    logger.debug("No Session")
                     continue
                 playbackInfo = playbackManager.currSession.get_playback_info()
 
                 if "start" in result:
-                    logger.info("Speech detected")
+                    logger.debug("Speech detected")
                     if playbackInfo.playback_status != playbackManager.PLAYING:
                         continue
 
                     if isConnected:
                         toggleANC()
-                        logger.info("Toggled ANC")
+                        logger.debug("Toggled ANC")
                     await playbackManager.toggle()
-                    logger.info("Toggled Playback")
+                    logger.debug("Toggled Playback")
                     wasPlaying = True
 
                 elif "end" in result:
@@ -156,9 +209,9 @@ async def run():
                     await playbackManager.toggle()
                     toggleANC()
                     wasPlaying = False
-                    logger.info("Speech Ended")
+                    logger.debug("Speech Ended")
 
         except Exception as e:
             logger.exception(str(e))
             terminateAudio()
-            logger.info("Terminating Audio due to Exception")
+            logger.warning("Terminating Audio due to Exception")

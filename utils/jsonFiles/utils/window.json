@@ -4,7 +4,7 @@
         "setFocus": "False"
     },
     "ServiceManager": {
-        "created": "True",
+        "created": "False",
         "setFocus": "False"
     },
     "CurlManager": {

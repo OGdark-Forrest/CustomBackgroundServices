@@ -16,7 +16,7 @@
             "fileName": "SpotifyOverlay"
         },
         "SpeechPause": {
-            "running": "False",
+            "running": "True",
             "description": "Automatically pausing media, when human speech is detected",
             "fileName": "SpeechPause"
         }
