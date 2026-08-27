@@ -1,8 +1,8 @@
 {
-    "ServiceCalls.Music.AutoPause": 40048,
-    "ServiceCalls.Music.IntervalSkipper": 32456,
-    "ServiceCalls.Music.SpotifyOverlay": 35288,
-    "ServiceCalls.Music.SpeechPause": 3732,
-    "ServiceCalls.Tracker.MangaTracker": 3672,
-    "ServiceCalls.Server.ServerStart": 23268
+    "ServiceCalls.Music.AutoPause": 33164,
+    "ServiceCalls.Music.IntervalSkipper": 40556,
+    "ServiceCalls.Music.SpotifyOverlay": 17972,
+    "ServiceCalls.Music.SpeechPause": 22720,
+    "ServiceCalls.Tracker.MangaTracker": 39080,
+    "ServiceCalls.Server.ServerStart": 40416
 }

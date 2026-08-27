@@ -38,12 +38,12 @@ if status == "0":
 
     info["boot"] = "1"
     general.writeJSON(general.pathInfo("jsonUtils")+"status.json", info)
-    general.writeJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json", servicePID)
 
-subprocess.Popen(
+process = subprocess.Popen(
     ["wscript.exe", general.pathInfo("vbs")+"MiniOverlay.vbs"],
     cwd=general.pathInfo("custom"),
     creationflags=subprocess.CREATE_NO_WINDOW
 )
+general.addProcess("GUI.mini", process.pid)
 
 selector.run()
