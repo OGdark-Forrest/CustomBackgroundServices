@@ -1,0 +1,6 @@
+{
+    "SpeechPause": {
+        "VAD Threshold": 0.3,
+        "MinSilenceDuration": 1500
+    }
+}

@@ -106,6 +106,11 @@ async def run():
         stream = None
         audio = None
 
+    def updateVAD():
+        params = general.readJSON(general.pathInfo("jsonService")+"serviceParams.json")["SpeechPause"]
+        vad.threshold = params["VAD Threshold"]
+        vad.min_silence_duration = params["MinSilenceDuration"]
+
     global isTransparency
     model = load_silero_vad()
     logger.debug("Loaded Silero VAD Model")
@@ -179,6 +184,8 @@ async def run():
                     bytearray(data),
                     dtype=torch.float32
                 )
+
+                updateVAD()
 
                 result = vad(samples, return_seconds=False)
 
