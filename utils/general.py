@@ -110,3 +110,8 @@ def generate_session_id(device_key):
         str(time_window).encode(),
         hashlib.sha256
     ).hexdigest()
+
+def addProcess(serviceName, pid):
+    servicePID = readJSON(pathInfo("jsonUtils")+"serviceProcesses.json")
+    servicePID[serviceName] = [pid]
+    writeJSON(pathInfo("jsonUtils")+"serviceProcesses.json", servicePID)
