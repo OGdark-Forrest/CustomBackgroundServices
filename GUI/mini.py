@@ -79,7 +79,7 @@ class Overlay(ctk.CTk):
         moveButton.bind("<B1-Motion>", self.move)
 
         count = 2
-        for app, symbol in [("ServiceManager", "🛠"), ("ChatOverlay", "💬"), ("CurlManager", "🌐"), ("SongMonitor", "🎵")]:
+        for app, symbol in [("ServiceManager", "🛠"), ("ChatOverlay", "💬"), ("CurlManager", "🌐"), ("SpeechPause", "🎵")]:
             self.createButton(app, symbol, count)
             count += 1
 

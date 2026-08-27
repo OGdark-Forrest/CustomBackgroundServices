@@ -3,7 +3,9 @@ from utils import general
 import subprocess
 
 info = general.readJSON(general.pathInfo("jsonUtils")+"status.json")
+servicePID = general.readJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json")
 status = info["boot"]
+
 general.configureLogger("stdout.log")
 logger = general.setLogger("main.py")
 
@@ -31,10 +33,12 @@ if status == "0":
             cwd=general.pathInfo("custom"),
             creationflags=subprocess.CREATE_NO_WINDOW
         )
+        servicePID[file] = process.pid
         logger.debug(f"Started process {file}")
 
     info["boot"] = "1"
     general.writeJSON(general.pathInfo("jsonUtils")+"status.json", info)
+    general.writeJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json", servicePID)
 
 subprocess.Popen(
     ["wscript.exe", general.pathInfo("vbs")+"MiniOverlay.vbs"],
