@@ -7,6 +7,10 @@ router = APIRouter()
 
 app = None
 
+def killAllProcesses():
+    subprocess.run(["taskkill", "/F", "/IM", "python.exe", "/T"])
+    subprocess.run(["taskkill", "/F", "/IM", "pythonw.exe", "/T"])
+
 class Selector(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -114,6 +118,9 @@ class Selector(ctk.CTk):
             height=420*self.scaleY
         )
         self.place(scrollFrame, 50, 50)
+
+        forceStopButton = ctk.CTkButton(masterTab, text="Force Shutdown", fg_color="#e31b1b", command=self.forceShutDown)
+        self.place(forceStopButton, 50, 5)
 
         if self.activeTab == "Running":
             clearAllButton = ctk.CTkButton(masterTab, text="Suspend all services", fg_color="#e31b1b", command=self.clearRunning)
@@ -295,6 +302,18 @@ class Selector(ctk.CTk):
         general.writeJSON(windowFile, windows)
 
         self.destroy()
+
+    def forceShutDown(self):
+        info = general.readJSON(general.pathInfo("jsonUtils")+"status.json")
+        info["boot"] = "0"
+        general.writeJSON(general.pathInfo("jsonUtils")+"status.json", info)
+
+        killAllProcesses()
+
+        servicePID = general.readJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json")
+        for service in servicePID:
+            servicePID[service] = "NONE"
+        general.writeJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json", servicePID)
 
 @router.put("/ServiceManagerFocus")
 def getFocus(key: str = Header()):

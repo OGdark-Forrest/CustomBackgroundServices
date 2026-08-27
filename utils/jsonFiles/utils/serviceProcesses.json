@@ -1,1 +1,8 @@
-{}
+{
+    "ServiceCalls.Music.AutoPause": 40048,
+    "ServiceCalls.Music.IntervalSkipper": 32456,
+    "ServiceCalls.Music.SpotifyOverlay": 35288,
+    "ServiceCalls.Music.SpeechPause": 3732,
+    "ServiceCalls.Tracker.MangaTracker": 3672,
+    "ServiceCalls.Server.ServerStart": 23268
+}
