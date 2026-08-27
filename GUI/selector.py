@@ -308,12 +308,12 @@ class Selector(ctk.CTk):
         info["boot"] = "0"
         general.writeJSON(general.pathInfo("jsonUtils")+"status.json", info)
 
-        killAllProcesses()
-
         servicePID = general.readJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json")
         for service in servicePID:
             servicePID[service] = "NONE"
         general.writeJSON(general.pathInfo("jsonUtils")+"serviceProcesses.json", servicePID)
+
+        killAllProcesses()
 
 @router.put("/ServiceManagerFocus")
 def getFocus(key: str = Header()):
