@@ -1,7 +1,7 @@
 {
     "Music": {
         "AutoPause": {
-            "running": "True",
+            "running": "False",
             "description": "Automatically pausing music, when other media detected",
             "fileName": "AutoPause"
         },
@@ -35,7 +35,7 @@
             "fileName": "ServerStart"
         },
         "RemoteNotes": {
-            "running": "True",
+            "running": "False",
             "description": "Modifying and getting Project Notes",
             "fileName": "ServerStart"
         },
