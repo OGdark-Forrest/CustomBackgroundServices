@@ -1,6 +1,6 @@
 {
     "ChatOverlay": {
-        "created": "False",
+        "created": "True",
         "setFocus": "False"
     },
     "ServiceManager": {

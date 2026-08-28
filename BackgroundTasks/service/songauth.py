@@ -2,7 +2,7 @@ from utils import general
 from utils.imports import *
 
 CLIENT_ID = "0907d0d611a2466797facf3d7c907fdd" 
-CLIENT_SECRET = "6edd571d95734f09ba1c732993209d78" 
+CLIENT_SECRET = os.getenv("spotifyClientSecret")
 REDIRECT_URI = "http://127.0.0.1:3000"
 
 AUTH_CODE = None

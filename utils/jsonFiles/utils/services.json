@@ -35,7 +35,7 @@
             "fileName": "ServerStart"
         },
         "RemoteNotes": {
-            "running": "False",
+            "running": "True",
             "description": "Modifying and getting Project Notes",
             "fileName": "ServerStart"
         },
