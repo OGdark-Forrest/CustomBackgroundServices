@@ -9,6 +9,12 @@ class RECT(ctypes.Structure):
         ("bottom", ctypes.c_long),
     ]
 
+def updateParam(serviceName, key, val):
+    info = general.readJSON(general.pathInfo("jsonService")+"serviceParams.json")
+    params = info[serviceName]
+    params[key]= val
+    general.writeJSON(general.pathInfo("jsonService")+"serviceParams.json", info)
+
 class Overlay(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -91,7 +97,7 @@ class Overlay(ctk.CTk):
         x = self.winfo_x() + event.x - self.dragX
         y = self.winfo_y() + event.y - self.dragY
 
-        self.geometry(f"200x50+{x}+{y}")
+        self.geometry(f"300x50+{x}+{y}")
 
     def keep_on_top(self):
         self.attributes("-topmost", True)

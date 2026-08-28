@@ -5,5 +5,7 @@
     "ServiceCalls.Music.SpeechPause": "NONE",
     "ServiceCalls.Tracker.MangaTracker": "NONE",
     "ServiceCalls.Server.ServerStart": "NONE",
-    "GUI.mini": "NONE"
+    "GUI.mini": [
+        16196
+    ]
 }

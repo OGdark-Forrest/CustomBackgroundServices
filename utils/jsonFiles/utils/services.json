@@ -1,17 +1,17 @@
 {
     "Music": {
         "AutoPause": {
-            "running": "False",
+            "running": "True",
             "description": "Automatically pausing music, when other media detected",
             "fileName": "AutoPause"
         },
         "IntervalSkipper": {
-            "running": "False",
+            "running": "True",
             "description": "Skips over set intervals for a given song",
             "fileName": "IntervalSkipper"
         },
         "SpotifyOverlay": {
-            "running": "False",
+            "running": "True",
             "description": "Simple and minimal media overlay",
             "fileName": "SpotifyOverlay"
         },
