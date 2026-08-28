@@ -28,7 +28,7 @@ class MonitorSession:
                     currentStatus = self.player.currSession.get_playback_info().playback_status
                     if currentStatus != self.PLAYING:
                         continue
-                    await self.player.skipTo(end)
+                    await self.player.skipTo(end-200)
 
     def readSongs(self):
         self.songTimes = general.readJSON(self.songFile)
