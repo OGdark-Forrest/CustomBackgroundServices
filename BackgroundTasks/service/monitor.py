@@ -24,7 +24,7 @@ class MonitorSession:
         for entry in self.songTimes:
             if self.songTimes[entry][2] == self.songName:
                 start, end = self.songTimes[entry][0]
-                if start < self.currTime < end:
+                if start < self.currTime < end-200:
                     currentStatus = self.player.currSession.get_playback_info().playback_status
                     if currentStatus != self.PLAYING:
                         continue
