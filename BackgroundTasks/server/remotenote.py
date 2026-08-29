@@ -15,7 +15,7 @@ def getFiles(deviceID: str = Header(), deviceKey: str = Header()):
     general.raiseServerError("RemoteNotes")
     verifyKey(deviceID, deviceKey)
     folder = Path("C:/Users/meerc/Documents/SharedNotes")
-    files = [f.name[:-4] for f in folder.iterdir() if f.is_file()]
+    files = [f.name for f in folder.iterdir() if f.is_file()]
     return files
 
 @router.get("/notes/get")
@@ -24,7 +24,7 @@ def getNotes(filename: str, deviceID: str = Header(), deviceKey: str = Header())
     verifyKey(deviceID, deviceKey)
     return {
         "status code": 200,
-        "content": general.readTXT(f"C:/Users/meerc/Documents/SharedNotes/{filename}.txt")
+        "content": general.readTXT(f"C:/Users/meerc/Documents/SharedNotes/{filename}")
     }
 
 @router.post("/notes/post")
@@ -37,6 +37,6 @@ def postNotes(content: Note, deviceID: str = Header(), deviceKey: str = Header()
     filename = text[:text.find("\n")]
     text = text[text.find("\n"):]
 
-    general.writeTXT(f"C:/Users/meerc/Documents/SharedNotes/{filename}.txt", text)
+    general.writeTXT(f"C:/Users/meerc/Documents/SharedNotes/{filename}", text)
 
     general.notificationThread(f"{filename}.txt succesfully received")
