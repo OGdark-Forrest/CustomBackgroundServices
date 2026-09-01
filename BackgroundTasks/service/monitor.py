@@ -24,11 +24,11 @@ class MonitorSession:
         for entry in self.songTimes:
             if self.songTimes[entry][2] == self.songName:
                 start, end = self.songTimes[entry][0]
-                if start < self.currTime < end-200:
+                if start < self.currTime < end-100:
                     currentStatus = self.player.currSession.get_playback_info().playback_status
                     if currentStatus != self.PLAYING:
                         continue
-                    await self.player.skipTo(end-200)
+                    await self.player.skipTo(end-100)
 
     def readSongs(self):
         self.songTimes = general.readJSON(self.songFile)
