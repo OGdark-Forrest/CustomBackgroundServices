@@ -51,7 +51,6 @@ class Window(ctk.CTk):
             self.geometry("500x275")
         else:
             self.geometry(f"500x275+{x}+{y-275}")
-        self.overrideredirect(True)
 
         self.createWidgets()
 
@@ -114,7 +113,7 @@ def checkToggle():
 def run():
     global win
     win = Window()
-    threading.Thread(target=checkToggle, daemon=True).start()
+    # threading.Thread(target=checkToggle, daemon=True).start()
 
     win.mainloop()
 
