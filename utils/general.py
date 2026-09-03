@@ -6,8 +6,10 @@ def readJSON(filename):
     return data
 
 def writeJSON(filename, data):
-    with open(filename, "w") as wfile:
+    tmpFilePath = filename + ".tmp"
+    with open(tmpFilePath, "w") as wfile:
         json.dump(data, wfile, indent=4)
+    os.replace(tmpFilePath, filename)
 
 def writeTXT(filename, data):
     with open(filename, "w", encoding="utf-8") as wfile:
