@@ -134,7 +134,7 @@ async def run():
     if isConnected:
         Headphone.ANC("ANC Indoor")
 
-        wasPlaying = False
+    wasPlaying = False
 
     threading.Thread(target=thread_target, daemon=True).start()
 
