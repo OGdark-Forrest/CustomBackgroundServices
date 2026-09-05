@@ -94,7 +94,7 @@ def thread_target():
     asyncio.run(checkConnection())
 
 async def run():
-    global logger
+    global logger, isTransparency
     logger = general.setLogger("speechpause.py")
 
     def terminateAudio():
@@ -111,9 +111,10 @@ async def run():
         vad.threshold = params["VAD Threshold"]
         vad.min_silence_duration = params["MinSilenceDuration"]
 
-    global isTransparency
     model = load_silero_vad()
     logger.debug("Loaded Silero VAD Model")
+
+    playbackManager = None
 
     vad = VADIterator(
         model,
@@ -146,9 +147,16 @@ async def run():
                 logger.info("Terminating Audio, service switched off")
             await asyncio.sleep(1)
             continue
-        
-        playbackManager = PlaybackManager()
-        await playbackManager.setManager()
+
+        if playbackManager is None:
+            playbackManager = PlaybackManager()
+            try:
+                result = await playbackManager.setManager()
+                if result is False:
+                    raise ValueError("PlaybackManager doesn't have a session manager")
+            except Exception as e:
+                logger.critical(str(e))
+                continue
 
         RATE = 16000
         CHUNK = 512
@@ -169,7 +177,7 @@ async def run():
 
             general.notificationThread("SpeechPause is listening...")
 
-        except Exception:
+        except:
             logger.exception("AUDIO INITIALIZATION FAILED")
             return
         
@@ -193,8 +201,8 @@ async def run():
                     continue
 
                 await playbackManager.checkPlaybackStatus()
+
                 if playbackManager.currSession is None:
-                    logger.debug("No Session")
                     continue
                 playbackInfo = playbackManager.currSession.get_playback_info()
 

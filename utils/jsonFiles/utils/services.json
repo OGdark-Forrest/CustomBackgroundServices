@@ -1,7 +1,7 @@
 {
     "Music": {
         "AutoPause": {
-            "running": "False",
+            "running": "True",
             "description": "Automatically pausing music, when other media detected",
             "fileName": "AutoPause"
         },

@@ -1,6 +1,6 @@
 {
     "SpeechPause": {
-        "VAD Threshold": 0.19999999999999996,
+        "VAD Threshold": 0.5,
         "MinSilenceDuration": 1600.0,
         "toggleWindow": "False",
         "xPos": 500,
