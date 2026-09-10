@@ -11,25 +11,24 @@ class Monitor:
     async def setMediaManager(self):
         await self.playbackManager.setManager()
 
-    async def checkSession(self):
+    async def checkToggleSession(self):
         if not await self.playbackManager.checkPlaybackStatus("Spotify", True):
-            return False, False
+            return False
 
         spotSessionPlaying = self.playbackManager.currSession.get_playback_info().playback_status == self.PLAYING
-
         if not spotSessionPlaying:
-            return True, False
+            return True
         
         for session in self.playbackManager.sessions:
             if "Spotify" in session.source_app_user_model_id:
                 continue
-            if session.get_playback_info().playback_status != self.PLAYING:
+            if session.get_playback_info().playback_status != self.PLAYING or self.continuePlaying is True:
                 continue
-
+            
             await self.playbackManager.toggle()
             self.continuePlaying = True
 
-        return True, False
+        return True
 
     async def checkContinue(self):
         for session in self.playbackManager.sessions:
@@ -48,8 +47,8 @@ async def run():
         if not condition:
             await asyncio.sleep(1)
             continue
-        sessionExists, sessionPlaying = await monitor.checkSession()
-        if sessionExists and not sessionPlaying:
+        sessionExists = await monitor.checkToggleSession()
+        if sessionExists:
             await monitor.checkContinue()
 
         await asyncio.sleep(1)

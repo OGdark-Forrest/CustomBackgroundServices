@@ -3,12 +3,10 @@
         "Apps": [
             "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Spotify.lnk",
             "powershell.exe",
-            "Notepad.exe",
-            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Visual Studio Code/Visual Studio Code.lnk",
-            "C:/Users/meerc/Desktop/CustomServices/VBS/ChatOverlay.vbs"
+            "C:/Users/meerc/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Visual Studio Code/Visual Studio Code.lnk"
         ],
         "Websites": [
-            "chatgpt.com"
+            "claude.ai/new"
         ],
         "Services": [
             "Music/AutoPause",
