@@ -6,6 +6,11 @@ class PlaybackManager:
         self.currSession = None
         self.mode = None
         self.PLAYING = GlobalSystemMediaTransportControlsSessionPlaybackStatus.PLAYING
+        self.status = {
+            "PLAYING": GlobalSystemMediaTransportControlsSessionPlaybackStatus.PLAYING,
+            "CLOSED": GlobalSystemMediaTransportControlsSessionPlaybackStatus.CLOSED,
+            "PAUSED": GlobalSystemMediaTransportControlsSessionPlaybackStatus.PAUSED
+        }
 
     async def setManager(self):
         for _ in range(5):
@@ -15,7 +20,7 @@ class PlaybackManager:
             except:
                 await asyncio.sleep(2)
 
-            return False
+        return False
 
     async def checkPlaybackStatus(self, app="", disableNotification=False):
         self.sessions = self.sessionManager.get_sessions()
