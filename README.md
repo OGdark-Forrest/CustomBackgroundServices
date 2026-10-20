@@ -36,11 +36,21 @@ After cloning, I recommend creating a virtual environment (venv) with Python 3.1
 
 ```python
 py -3.12 -m venv .venv
-
+.venv/Scripts/Activate.ps1 (for Powershell)
+.venv/Scripts/Activate.bat (for Command Prompt)
 pip install customtkinter fastapi "uvicorn[standard]" pyautogui PyAudio torch silero-vad psutil WMI monitorcontrol mss pillow websockets requests pydantic win11toast winsdk
 ```
 
-Once installed, the service manager can be started by running main.py.
+Once installed, the service manager can be started by activating the virtual environment and running main.py.
+
+### For running remote services:
+This rmeote system is authenticated, with the server (laptop) providing the deviceID and deviceKey to the client.
+For every request these two are authenticated in the header.
+
+**Steps for Authentication**:
+1. Send a request with device name and IP address to your server's address followed by `/register/new` which gives a jobID.
+2. Send another request to `/register/check` giving your jobID, which returns the deviceID and deviceKey, which need to be securely stored.
+3. I recommend creating some environment variable or storing it in a file locally instead of hardcoding any values.
 
 ## Potential Problems + Solutions:
 In case the service manager window can't start, the following function can be added and run in Terminal to terminate all python 
@@ -57,3 +67,45 @@ function terminate {
 Check this resource for more help -> [How To Add Functions in Powershell](https://learn.microsoft.com/en-us/powershell/scripting/learn/ps101/09-functions?view=powershell-7.6)
 
 This function terminates all python processes.
+
+## Available Services:
+### Local Services (Non-Server):
+**`AutoPause`**: 
+Automatically pauses and resumes Spotify music when other media is detected playing.
+
+**`IntervalSkipper`**: 
+Automatically skips over certain songs over particular intervals.
+In order to add songs or manage time intervals, run the VBS file `VBS/SongMonitor.vbs` or create and run a shortcut for the same.
+
+**`SpotifyOverlay`**:
+Minimal media overlay just for controlling spotify (ALWAYS stays on top of taskbar if service is on)
+
+**`SpeechPause`**:
+Automatically pauses media if human speech is detected.
+(I made some additional functionality of turning my headphone's ANC on and off accordingly, only works for Anker SoundCore Q30)
+In order to change the sensitivity, run the VBS file `VBS/SpeechPause.vbs` or create and run a shortcut for the same.
+
+**`Curl Manager`**:
+Makes adding fields/urls/header/etc. easy for cURLs.
+In order to use, run the VBS file `VBS/CurlManager.vbs` or create and run a shortcut for the same.
+
+**`Chat Overlay`**:
+Opens an overlay window useful for chatting with an AI LLM.
+(Must provide the AI model LLM information and API_KEY environment variable in `GUI/backEnd/model.py`)
+In order to use, run the VBS file `VBS/ChatOverlay.vbs`
+
+### Remote Services:
+**`Remote Player`**:
+Remotely controls laptop media.
+
+**`Remote Notes`**:
+Modifies and gets project notes.
+Works with a `SharedNotes` directory in `Documents`. File path may be changed in `BackgroundTasks/server/remotenote.py`.
+
+**`Remote Start`**:
+Remotely starting apps/services.
+To change, remove or add modes, please check `utils/jsonFiles/service/siteApps.json`.
+
+**`Remote Service`**:
+Remotely toggling services on and off.
+
